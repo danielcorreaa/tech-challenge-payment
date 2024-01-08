@@ -1,0 +1,32 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: tech-challenge-product
+  data:
+    mongodb:
+      authentication-database: admin
+      host: localhost
+      port: 27017
+      database: tech-challenge-payments
+      username: root
+      password: example
+  kafka:
+    bootstrap-servers: localhost:9092
+api:
+  mercadolivre:
+    orders: https://api.mercadopago.com/instore/orders/qr/seller/collectors/1423020936/pos/DANICAIXA01/qrs
+    token: TEST-7847449179180884-072110-5b05cf6195417ca341935a011741dbdb-1423020936
+    payment: https://api.mercadolibre.com/merchant_orders
+
+kafka:
+  topic:
+    consumer:
+      orders: tech.orders
+      groupId: groupId
+    producer:
+      payment: tech.payment
+
+lanchonete:
+  description: Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas
+  title: Lanchonete Tech Challenge
