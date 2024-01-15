@@ -1,12 +1,13 @@
 package com.techchallenge.application.usecase;
 
-import com.techchallenge.application.gateway.MessageGateway;
 import com.techchallenge.application.gateway.PaymentExternalGateway;
 import com.techchallenge.application.gateway.PaymentGateway;
 import com.techchallenge.application.usecase.interactor.PaymentUseCaseInteractor;
+import com.techchallenge.core.exceptions.BusinessException;
 import com.techchallenge.core.exceptions.NotFoundException;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.entity.PaymentQRCode;
+import com.techchallenge.infrastructure.external.dtos.PaymentResponseML;
 import com.techchallenge.util.ObjectMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,7 @@ class PaymentUseCaseTest {
     PaymentExternalGateway paymentExternalGateway;
     @Spy
     PaymentGateway paymentGateway;
-    @Spy
-    MessageGateway messageGateway;
+
 
     ObjectMock mock;
 
@@ -67,7 +67,7 @@ class PaymentUseCaseTest {
     void testGeneratePaymentAndResponseQRCode() {
         Payment payment = mock.getPaymentMock("5678");
 
-        when(paymentExternalGateway.sendPayment(payment)).thenReturn(new PaymentQRCode(mock(InputStream.class)));
+        when(paymentExternalGateway.sendPayment(payment)).thenReturn(Optional.of(new PaymentQRCode(mock(InputStream.class))));
         when(paymentGateway.findById("5678")).thenReturn(Optional.of(payment));
 
         PaymentQRCode paymentQRCode = paymentUseCase.generatePayment("5678", "http-test-url-for-webhook");
@@ -84,7 +84,7 @@ class PaymentUseCaseTest {
     void testGeneratePaymentFailToFindPayment() {
         Payment payment = mock.getPaymentMock("85");
 
-        when(paymentExternalGateway.sendPayment(payment)).thenReturn(new PaymentQRCode(mock(InputStream.class)));
+        when(paymentExternalGateway.sendPayment(payment)).thenReturn(Optional.of(new PaymentQRCode(mock(InputStream.class))));
                 when(paymentGateway.findById("5678")).thenReturn(Optional.empty());
 
         var ex =assertThrows(NotFoundException.class, () ->  paymentUseCase
@@ -98,10 +98,30 @@ class PaymentUseCaseTest {
     }
 
     @Test
-    void webhook() {
+    void testWebhookWithSucess() {
+        String resource = "http//test-webhook";
+        String orderId = "5678";
+        Payment payment = mock.getPaymentMock(orderId);
+        PaymentResponseML paid = PaymentResponseML.builder().externalReference(orderId).orderStatus("paid").build();
 
-        String test = String.format("%s%s:%s@%s:%s/%s", "mongodb://", "root", "exemple", "localhost", "20027", "payment");
-        System.out.println(test);
+        when(paymentExternalGateway.checkPayment(resource)).thenReturn(paid);
+        when(paymentGateway.findById(orderId)).thenReturn(Optional.of(payment));
+        when(paymentGateway.insert(payment)).thenReturn(payment);
+        paymentUseCase.webhook(resource);
 
+        assertTrue(payment.isPaid());
+        verify(paymentExternalGateway, times(1)).checkPayment(resource);
+        verify(paymentGateway, times(1)).findById(orderId);;
+        verify(paymentGateway, times(1)).insert(payment);
+    }
+
+    @Test
+    void testWebhookWithParamNull() {
+
+        var ex = assertThrows(BusinessException.class, () -> paymentUseCase.webhook(null)) ;
+        assertEquals("Resource can't be null!", ex.getMessage());
+        verify(paymentExternalGateway, never()).checkPayment(any());
+        verify(paymentGateway,  never()).findById(any());;
+        verify(paymentGateway,  never()).insert(any());
     }
 }

@@ -5,24 +5,31 @@ import com.techchallenge.application.usecase.PaymentUseCase;
 import com.techchallenge.domain.entity.MessagePayment;
 import com.techchallenge.domain.entity.Payment;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 
 @Log4j2
+@EnableScheduling
 public class PaymentProduce {
 
     private MessageUseCase messageUseCase;
     private PaymentUseCase paymentUseCase;
+
+    private static final long SECOND = 1000;
+    private static final long MINUTE = SECOND * 60;
 
     public PaymentProduce(MessageUseCase messageUseCase, PaymentUseCase paymentUseCase) {
         this.messageUseCase = messageUseCase;
         this.paymentUseCase = paymentUseCase;
     }
 
+    @Scheduled(fixedDelay = MINUTE)
     public void process(){
-        List<Payment> notSendAndIsPaid = messageUseCase.findNotSendAndIsPaid();
+        List<Payment> notSendAndIsPaid = paymentUseCase.findNotSendAndIsPaid();
         if(notSendAndIsPaid.isEmpty()) {
-            log.info("No message to sendd");
+            log.info("No message to send");
         }
         notSendAndIsPaid.forEach( send -> {
             log.info("Message to send: " + send);

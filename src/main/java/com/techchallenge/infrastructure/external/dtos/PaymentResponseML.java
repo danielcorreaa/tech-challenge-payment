@@ -2,9 +2,11 @@ package com.techchallenge.infrastructure.external.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record PaymentResponseML(
 		Long id,
 		String status,

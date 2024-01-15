@@ -4,9 +4,11 @@ import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.entity.PaymentQRCode;
 import com.techchallenge.infrastructure.external.dtos.PaymentResponseML;
 
+import java.util.Optional;
+
 public interface PaymentExternalGateway {
 
-	PaymentQRCode sendPayment(Payment payment);
+    Optional<PaymentQRCode> sendPayment(Payment payment);
 
 	PaymentResponseML checkPayment(String resource);
 }

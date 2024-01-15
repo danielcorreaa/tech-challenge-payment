@@ -1,8 +1,6 @@
 package com.techchallenge.integration.infrastructure.gateways;
 
 import com.techchallenge.MongoTestConfig;
-import com.techchallenge.core.exceptions.BusinessException;
-import com.techchallenge.core.exceptions.NotFoundException;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
@@ -55,8 +53,6 @@ class PaymentRepositoryGatewayTest {
     static void overrrideMongoDBContainerProperties(DynamicPropertyRegistry registry){
         registry.add("spring.data.mongodb.host", mongoDBContainer::getHost);
         registry.add("spring.data.mongodb.port", mongoDBContainer::getFirstMappedPort);
-
-        System.out.println(mongoDBContainer.getConnectionString());
     }
 
     @BeforeAll

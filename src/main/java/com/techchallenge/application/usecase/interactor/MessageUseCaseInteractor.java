@@ -1,32 +1,25 @@
 package com.techchallenge.application.usecase.interactor;
 
-import com.techchallenge.application.gateway.MessageGateway;
 import com.techchallenge.application.gateway.PaymentGateway;
 import com.techchallenge.application.usecase.MessageUseCase;
+import com.techchallenge.core.kafka.produce.TopicProducer;
 import com.techchallenge.domain.entity.MessagePayment;
 import com.techchallenge.domain.entity.Payment;
+import org.springframework.kafka.support.SendResult;
 
 import java.util.List;
 
 public class MessageUseCaseInteractor implements MessageUseCase {
 
-    private PaymentGateway paymentGateway;
-    private MessageGateway messageGateway;
+    private TopicProducer<MessagePayment> topicProducer;
 
-    public MessageUseCaseInteractor(PaymentGateway paymentGateway, MessageGateway messageGateway) {
-        this.paymentGateway = paymentGateway;
-        this.messageGateway = messageGateway;
+    public MessageUseCaseInteractor(TopicProducer<MessagePayment> topicProducer) {
+        this.topicProducer = topicProducer;
     }
 
     @Override
-    public void send(MessagePayment messagePayment) {
-        messageGateway.send(messagePayment);
+    public SendResult<String, MessagePayment> send(MessagePayment messagePayment) {
+        return topicProducer.produce(messagePayment.getExternalReference(), messagePayment);
     }
-
-    @Override
-    public List<Payment> findNotSendAndIsPaid() {
-        return paymentGateway.findNotSendAndIsPaid();
-    }
-
 
 }

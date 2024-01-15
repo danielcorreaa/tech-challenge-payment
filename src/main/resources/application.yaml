@@ -15,9 +15,10 @@ spring:
     bootstrap-servers: localhost:9092
 api:
   mercadolivre:
-    orders: https://api.mercadopago.com/instore/orders/qr/seller/collectors/1423020936/pos/DANICAIXA01/qrs
+    api:  https://api.mercadopago.com
+    orders: instore/orders/qr/seller/collectors/1423020936/pos/DANICAIXA01/qrs
     token: TEST-7847449179180884-072110-5b05cf6195417ca341935a011741dbdb-1423020936
-    payment: https://api.mercadolibre.com/merchant_orders
+    payment: merchant_orders
 
 kafka:
   topic:

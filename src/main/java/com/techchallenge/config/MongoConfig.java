@@ -56,8 +56,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return MongoClients.create(mongoClientSettings);
     }
 
-   // mongodb+srv://myDatabaseUser:D1fficultP%40ssw0rd@cluster0.example.mongodb.net/?retryWrites=true&w=majority
-   //mongodb://localhost:27017/test"
     public String getConnectionString(){
 
         if(StringUtils.isBlank(user) && StringUtils.isBlank(password)){

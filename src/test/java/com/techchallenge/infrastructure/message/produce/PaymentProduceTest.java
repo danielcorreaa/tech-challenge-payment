@@ -1,27 +1,25 @@
 package com.techchallenge.infrastructure.message.produce;
 
-import com.techchallenge.application.gateway.MessageGateway;
 import com.techchallenge.application.gateway.PaymentExternalGateway;
 import com.techchallenge.application.gateway.PaymentGateway;
 import com.techchallenge.application.usecase.MessageUseCase;
 import com.techchallenge.application.usecase.PaymentUseCase;
 import com.techchallenge.application.usecase.interactor.MessageUseCaseInteractor;
 import com.techchallenge.application.usecase.interactor.PaymentUseCaseInteractor;
+import com.techchallenge.core.kafka.produce.TopicProducer;
 import com.techchallenge.domain.entity.MessagePayment;
 import com.techchallenge.domain.entity.Payment;
-import com.techchallenge.infrastructure.gateways.MessageGatewayInteractor;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import com.techchallenge.util.ObjectMock;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.MockProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -33,7 +31,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -48,11 +45,6 @@ class PaymentProduceTest {
     PaymentUseCase paymentUseCase;
 
     PaymentGateway paymentGateway;
-    MessageGateway messageGateway;
-
-
-    @Mock
-    KafkaTemplate<String, MessagePayment> kafkaTemplate;;
 
     ProducerFactory producerFactory;
     @Spy
@@ -62,23 +54,23 @@ class PaymentProduceTest {
     @Mock
     PaymentExternalGateway paymentExternalGateway;
 
+    @Mock
+    TopicProducer<MessagePayment> topicProducer;
+
     ObjectMock mock;
 
     @BeforeEach
     void init(){
-
-
         mock = new ObjectMock();
         paymentDocumentMapper = new PaymentDocumentMapper();
+
         paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);
-
-        messageGateway = new MessageGatewayInteractor(kafkaTemplate);
-        ReflectionTestUtils.setField(messageGateway, "topic", "test");
-
-        messageUseCase = new MessageUseCaseInteractor(paymentGateway, messageGateway);
+        messageUseCase = new MessageUseCaseInteractor(topicProducer);
 
         paymentUseCase = new PaymentUseCaseInteractor(paymentExternalGateway, paymentGateway);
         paymentProduce = new PaymentProduce(messageUseCase, paymentUseCase);
+
+
     }
 
     @Test
@@ -89,16 +81,31 @@ class PaymentProduceTest {
         when(paymentRepository.findNotSendAndIsPaid(any(Sort.class))).thenReturn(documents);
         for (PaymentDocument doc : documents) {
             when(paymentRepository.save(any(PaymentDocument.class))).thenReturn(doc);
-            CompletableFuture<SendResult<String, MessagePayment>> future = new CompletableFuture<>();
-            when(kafkaTemplate.send(any(String.class), any(MessagePayment.class))).thenReturn(future);
+
+            ProducerRecord<String, MessagePayment> producerRecord =
+                    new ProducerRecord<>("test", new MessagePayment("5214","paid"));
+            RecordMetadata recordMetadata = mock(RecordMetadata.class);
+
+            SendResult<String, MessagePayment> sendResult = new SendResult<>(producerRecord, recordMetadata);
+            when(topicProducer.produce(any(String.class), any(MessagePayment.class))).thenReturn(sendResult);
         }
 
         paymentProduce.process();
 
         verify(paymentRepository, times(1)).findNotSendAndIsPaid(any(Sort.class));
         verify(paymentRepository, times(5)).save(any());
-        verify(kafkaTemplate , times(5)).send(any(String.class), any(MessagePayment.class));
+        verify(topicProducer , times(5)).produce(any(String.class), any(MessagePayment.class));
+    }
 
+    @Test
+    void testProcessMessageNoMessageToProduce(){
+        when(paymentRepository.findNotSendAndIsPaid(any(Sort.class))).thenReturn(List.of());
+
+        paymentProduce.process();
+
+        verify(paymentRepository, times(1)).findNotSendAndIsPaid(any(Sort.class));
+        verify(paymentRepository, never()).save(any());
+        verify(topicProducer ,never()).produce(any(String.class), any(MessagePayment.class));
     }
 
 }

@@ -46,6 +46,7 @@ public class PaymentDocumentMapper {
                 .orderStatus(payment.getOrderStatus())
                 .sent(payment.getSent())
                 .createTime(payment.getCreateTime())
+                .id(payment.getExternalReference())
                 .build();
     }
 
