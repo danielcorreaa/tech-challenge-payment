@@ -48,7 +48,7 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration( classes = {MongoTestConfig.class})
 @TestPropertySource(locations = "classpath:/application-test.properties")
 @Testcontainers
-public class PaymentUseCaseIntegrationTest {
+class PaymentUseCaseIntegrationTest {
 
     PaymentUseCase paymentUseCase;
 

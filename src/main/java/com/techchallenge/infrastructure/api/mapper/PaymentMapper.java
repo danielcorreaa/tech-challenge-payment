@@ -28,7 +28,7 @@ public class PaymentMapper {
 	}
 
 	public List<Item> toItems(List<ItemsRequest> items){
-		return items.stream().map(item -> toItem(item)).toList();
+		return items.stream().map(this::toItem).toList();
 	}
 
 	public PaymentResponse toPaymentResponse(Payment payment) {
@@ -58,6 +58,6 @@ public class PaymentMapper {
 				.build();
 	}
 	private List<ItemResponse> toItemsResponse(List<Item> items) {
-		return items.stream().map(item -> toItemResponse(item)).toList();
+		return items.stream().map(this::toItemResponse).toList();
 	}
 }

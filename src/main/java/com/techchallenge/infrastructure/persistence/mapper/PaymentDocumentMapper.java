@@ -6,7 +6,6 @@ import com.techchallenge.infrastructure.persistence.documents.ItemDocument;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -17,7 +16,7 @@ public class PaymentDocumentMapper {
                 paymentDocument.getTitle(),
                 paymentDocument.getDescription(),
                 paymentDocument.getNotificationUrl(),
-                paymentDocument.getTotalAmount(), paymentDocument.getOrderStatus(),
+                paymentDocument.getOrderStatus(),
                 toItems(paymentDocument.getItems()),
                 paymentDocument.getCreateTime(),
                 paymentDocument.getSent());
@@ -33,7 +32,7 @@ public class PaymentDocumentMapper {
     }
 
     public List<Item> toItems(List<ItemDocument> items){
-        return items.stream().map(item -> toItem(item)).toList();
+        return items.stream().map(this::toItem).toList();
     }
 
     public PaymentDocument toPaymentDocument(Payment payment) {
@@ -62,10 +61,10 @@ public class PaymentDocumentMapper {
                 .totalAmount(item.getTotalAmount()).build();
     }
     public List<ItemDocument> toItemsDocuments(List<Item> items){
-        return items.stream().map(item -> toItemDocument(item)).toList();
+        return items.stream().map(this::toItemDocument).toList();
     }
 
     public List<Payment> toPayments(List<PaymentDocument> payments) {
-        return payments.stream().map( pay -> toPayment(pay)).toList();
+        return payments.stream().map(this::toPayment).toList();
     }
 }

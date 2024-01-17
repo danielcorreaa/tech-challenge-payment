@@ -17,8 +17,9 @@
 		<java.version>17</java.version>
 		<tech.challenge.core.version>0.0.2</tech.challenge.core.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
-
-	</properties>
+		<sonar.organization>danielcorreaa</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.exclusions>src\main\java\com\techchallenge\SpringApp.java,src/main/java/com/techchallenge/config/UseCaseConfig.java</sonar.exclusions>	</properties>
 	<dependencies>
 		<!-- Spring boot Dependency -->
 		<dependency>
@@ -119,7 +120,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
 		<!-- Core Techchallenge Dependency -->
 		<dependency>
 			<groupId>com.techchallenge</groupId>
@@ -152,13 +152,52 @@
 
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>tech-challenge-core-mvn-repo</id>
+			<url>https://raw.github.com/danielcorreaa/tech-challenge-core/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.8</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

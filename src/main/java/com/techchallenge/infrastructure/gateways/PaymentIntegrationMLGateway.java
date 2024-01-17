@@ -60,7 +60,6 @@ public class PaymentIntegrationMLGateway implements PaymentExternalGateway {
 	public PaymentResponseML checkPayment(String resource) {
 		String[] split = resource.split("/");
 		String param = split[split.length - 1];
-		PaymentResponseML payment = null;
 		try{
 			return httpRequestML.findPayment("Bearer " + token, param);
 		} catch (FeignException fe){

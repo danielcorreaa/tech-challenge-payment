@@ -1,13 +1,11 @@
 package com.techchallenge.infrastructure.external.mapper;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.valueobject.Item;
 import com.techchallenge.infrastructure.external.dtos.ItemsML;
 import com.techchallenge.infrastructure.external.dtos.OrdersML;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -24,7 +22,7 @@ public class OrderMLMapper {
     }
 
     public List<ItemsML> toItemsMl(List<Item> items){
-        return items.stream().map( item -> toItemMl(item)).toList();
+        return items.stream().map(this::toItemMl).toList();
     }
 
 

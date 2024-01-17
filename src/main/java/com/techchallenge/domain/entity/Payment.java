@@ -5,6 +5,7 @@ import com.techchallenge.domain.valueobject.Validation;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,6 @@ public class Payment {
 	private String title;
 	private String description;
 	private String notificationUrl;
-	private BigDecimal totalAmount;
 	private String orderStatus;
 	private List<Item> items;
 	private LocalDateTime createTime;
@@ -30,17 +30,18 @@ public class Payment {
 		this.createTime = LocalDateTime.now();
 	}
 
-	private Payment(String externalReference, String title, String description, String notificationUrl, BigDecimal totalAmount, String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent) {
+	private Payment(String externalReference, String title, String description, String notificationUrl, String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent) {
 		this.externalReference = externalReference;
 		this.title = title;
 		this.description = description;
 		this.notificationUrl = notificationUrl;
-		this.totalAmount = totalAmount;
 		this.orderStatus = orderStatus;
 		this.items = items;
 		this.createTime = createTime;
 		this.sent = sent;
 	}
+
+
 
 	public String getExternalReference() {
 		return externalReference;
@@ -63,7 +64,7 @@ public class Payment {
 	}
 
 	public BigDecimal getTotalAmount() {
-		return Optional.ofNullable(items).stream().flatMap(item -> item.stream()).map(it -> it.getUnitPrice())
+		return Optional.ofNullable(items).stream().flatMap(Collection::stream).map(Item::getUnitPrice)
 				.reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 	}
 
@@ -81,7 +82,7 @@ public class Payment {
 	}
 
 	public Payment toSend(){
-		if(isPaid()) {
+		if(Boolean.TRUE.equals(isPaid())) {
 			this.sent = Boolean.TRUE;
 		}
 		return this;
@@ -101,13 +102,15 @@ public class Payment {
 	}
 
 	public static Payment toPayment(String externalReference, String title, String description, String notificationUrl,
-					  BigDecimal totalAmount, String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent){
+					String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent){
 		return new Payment(externalReference, title, description, notificationUrl,
-				totalAmount, orderStatus,items, createTime, sent);
+				 orderStatus,items, createTime, sent);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString();
 	}
+
+
 }

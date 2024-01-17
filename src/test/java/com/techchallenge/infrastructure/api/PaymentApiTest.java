@@ -356,6 +356,7 @@ class PaymentApiTest {
         }
     }
 
+    @Nested
     class TestFindPayment {
         @Test
         void testFindbyExternalReferenceWithSucsess() throws Exception {

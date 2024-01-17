@@ -8,7 +8,7 @@ import com.techchallenge.core.kafka.KafkaConsumerConfig;
 import com.techchallenge.core.kafka.KafkaProducerConfig;
 import com.techchallenge.core.kafka.produce.TopicProducer;
 import com.techchallenge.domain.entity.MessagePayment;
-import com.techchallenge.infrastructure.consumer.OrderConsumer;
+import com.techchallenge.infrastructure.message.consumer.OrderConsumer;
 import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
 import com.techchallenge.infrastructure.message.consumer.mapper.OrderMessageMapper;
 import com.techchallenge.infrastructure.message.produce.PaymentProduce;
@@ -83,9 +83,7 @@ public class KafkaConfig {
         return  new MessageUseCaseInteractor(topicProducer());
     }
 
-
-    public <T> JsonDeserializer<T> jsonDeserializer(JsonDeserializer jsonDeserializer){
-        JsonDeserializer<T> deserializer = jsonDeserializer;
+    public <T> JsonDeserializer<T> jsonDeserializer(JsonDeserializer<T> deserializer){
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);

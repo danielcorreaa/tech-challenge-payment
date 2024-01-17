@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("api/v1/payment")
 public class PaymentApi {
@@ -34,21 +32,21 @@ public class PaymentApi {
 
 
 	@PostMapping("/pay")
-	public ResponseEntity<InputStreamResource> checkout(@RequestBody PayRequest payRequest, UriComponentsBuilder uri ) throws IOException {
+	public ResponseEntity<InputStreamResource> checkout(@RequestBody PayRequest payRequest, UriComponentsBuilder uri )  {
 		UriComponents uriComponents = uri.path("/api/v1/payment/webhook").build();
 		PaymentQRCode qrCode = paymentUseCase.generatePayment(payRequest.externalReference(), uriComponents.toUriString());
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(new InputStreamResource(qrCode.getQrCode()));
 	}
 
 	@PostMapping("/webhook")
-	public ResponseEntity<Result<String>> webhook(@RequestBody PaymentWebhookRequest request) throws IOException {
+	public ResponseEntity<Result<String>> webhook(@RequestBody PaymentWebhookRequest request) {
 		paymentUseCase.webhook(request.resource());
 		return ResponseEntity.ok(Result.ok("Webhook process with success!"));
 
 	}
 
 	@GetMapping("/find/{externalReference}")
-	public ResponseEntity<Result<PaymentResponse>> findbyExternalReference(@PathVariable String externalReference) throws IOException {
+	public ResponseEntity<Result<PaymentResponse>> findbyExternalReference(@PathVariable String externalReference) {
 		Payment payment = paymentUseCase.findByExternalReference(externalReference);
 		return ResponseEntity.ok(Result.ok(mapper.toPaymentResponse(payment)));
 

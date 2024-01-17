@@ -1,13 +1,9 @@
 package com.techchallenge.application.usecase.interactor;
 
-import com.techchallenge.application.gateway.PaymentGateway;
 import com.techchallenge.application.usecase.MessageUseCase;
 import com.techchallenge.core.kafka.produce.TopicProducer;
 import com.techchallenge.domain.entity.MessagePayment;
-import com.techchallenge.domain.entity.Payment;
 import org.springframework.kafka.support.SendResult;
-
-import java.util.List;
 
 public class MessageUseCaseInteractor implements MessageUseCase {
 

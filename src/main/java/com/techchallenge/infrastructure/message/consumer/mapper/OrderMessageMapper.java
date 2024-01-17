@@ -23,6 +23,6 @@ public class OrderMessageMapper {
     }
 
     public List<Item> toItems(List<ProductDto> productDtos){
-        return productDtos.stream().map(item -> toItem(item)).toList();
+        return productDtos.stream().map(this::toItem).toList();
     }
 }

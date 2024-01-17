@@ -1,4 +1,4 @@
-package com.techchallenge.infrastructure.consumer;
+package com.techchallenge.infrastructure.message.consumer;
 
 import com.techchallenge.application.usecase.PaymentUseCase;
 import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
@@ -33,10 +33,10 @@ public class OrderConsumer {
 
     @KafkaListener(topics = "${kafka.topic.consumer.orders}", groupId = "${kafka.topic.consumer.groupId}",
             containerFactory = "kafkaListenerContainerFactoryOrderDto")
-    public void listenOrders(@Payload OrderDto record, Acknowledgment ack) {
-        log.info("Received Message: " + record.toString());
+    public void listenOrders(@Payload OrderDto orderDto, Acknowledgment ack) {
+        log.info("Received Message: " + orderDto.toString());
         try {
-            paymentUseCase.save(mapper.toPayment(title, description, record));
+            paymentUseCase.save(mapper.toPayment(title, description, orderDto));
             ack.acknowledge();
             latch.countDown();
         } catch (Exception ex){

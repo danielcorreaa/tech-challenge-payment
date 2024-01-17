@@ -38,8 +38,9 @@ public class PaymentRepositoryGateway implements PaymentGateway {
 	}
 
 	@Override
-	public List<Payment> findNotSendAndIsPaid() {		;
-		List<PaymentDocument> payments =  paymentRepository.findNotSendAndIsPaid(Sort.by(Sort.Direction.ASC, "createTime"));
+	public List<Payment> findNotSendAndIsPaid() {
+		List<PaymentDocument> payments =  paymentRepository
+				.findNotSendAndIsPaid(Sort.by(Sort.Direction.ASC, "createTime"));
 		return mapper.toPayments(payments);
 	}
 

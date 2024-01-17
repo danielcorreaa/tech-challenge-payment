@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class Validation {
 
+    private Validation() {
+    }
+
     public static String validate(String value, String fieldName) {
         return Optional.ofNullable(value).filter(v -> !v.trim().isEmpty())
                 .orElseThrow(() -> new IllegalArgumentException(fieldName + " can't be null or empty"));
