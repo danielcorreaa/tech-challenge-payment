@@ -9,7 +9,6 @@ import com.techchallenge.core.response.JsonUtils;
 import com.techchallenge.core.response.ObjectMapperConfig;
 import com.techchallenge.core.utils.FileUtils;
 import com.techchallenge.domain.entity.Payment;
-import com.techchallenge.infrastructure.consumer.OrderConsumer;
 
 import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
 import com.techchallenge.util.ObjectMock;

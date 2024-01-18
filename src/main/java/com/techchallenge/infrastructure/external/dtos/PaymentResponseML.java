@@ -20,10 +20,6 @@ public record PaymentResponseML(
 		@JsonIgnore
 		List<PaymentsResponseML> payments,
 		@JsonIgnore
-		List<ShipmentsResponseML> shipments,
-		@JsonIgnore
-		List<PayoutsResponseML> payouts,
-		@JsonIgnore
 		CollectorResponseML collector,
 		@JsonIgnore
 		String marketplace,
@@ -67,10 +63,7 @@ public record PaymentResponseML(
 		
 		@JsonIgnore
 		PayerResponseML payer,
-		
-		@JsonIgnore
-		List<ItemsResponseML> items,
-		
+
 		@JsonIgnore
 		@JsonProperty("additional_info")
 		String additionalInfo,
