@@ -13,4 +13,4 @@ spec:
       name: http
       port: 8083
       targetPort: 8083
-      nodePort: 30004
+      nodePort: 30002
