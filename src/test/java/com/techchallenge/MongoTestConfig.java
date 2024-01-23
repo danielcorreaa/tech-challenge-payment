@@ -6,6 +6,7 @@ import com.techchallenge.application.usecase.interactor.MessageUseCaseInteractor
 import com.techchallenge.config.KafkaConfig;
 import com.techchallenge.core.kafka.produce.TopicProducer;
 import com.techchallenge.domain.entity.MessagePayment;
+import com.techchallenge.infrastructure.message.produce.PaymentProduce;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,6 +45,12 @@ public class MongoTestConfig {
     @Bean
     public TopicProducer<MessagePayment> topicProducer(){
         return mock(TopicProducer.class);
+    }
+
+    @Primary
+    @Bean
+    public PaymentProduce paymentProduce(){
+        return mock(PaymentProduce.class);
     }
 
 }

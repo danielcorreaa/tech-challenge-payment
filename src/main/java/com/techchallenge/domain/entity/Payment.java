@@ -56,6 +56,9 @@ public class Payment {
 	}
 
 	public String getNotificationUrl() {
+		if(Optional.ofNullable(notificationUrl).orElse("").isEmpty()){
+			notificationUrl = "https://eo5swulfz2hoccg.m.pipedream.net";
+		}
 		return notificationUrl;
 	}
 

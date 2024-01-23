@@ -144,7 +144,6 @@ class PaymentApiTest {
             String jsonRequest = jsonUtils.toJson(new PayRequest(orderId)).orElse("");
 
             Payment payment = mock.getPaymentMock(orderId);
-            payment.setNotificationUrl("http://test/url");
             PaymentDocument paymentDocument = paymentDocumentMapper.toPaymentDocument(payment);
 
             when(paymentRepository.findById(orderId)).thenReturn(Optional.of(paymentDocument));
@@ -160,7 +159,7 @@ class PaymentApiTest {
             assertNotNull(mvcResult.getResponse());
             assertEquals("image/png", mvcResult.getResponse().getContentType());
 
-            verify(paymentRepository, never()).save(any(PaymentDocument.class));
+            verify(paymentRepository, times(1)).save(any(PaymentDocument.class));
         }
 
 
@@ -382,7 +381,6 @@ class PaymentApiTest {
             assertEquals(2, body.items().size());
             assertFalse(body.sent());
             assertNull(body.orderStatus());
-            assertNull(body.notificationUrl());
 
             assertEquals("2", body.items().get(0).skuNumber());
             assertEquals("3", body.items().get(1).skuNumber());

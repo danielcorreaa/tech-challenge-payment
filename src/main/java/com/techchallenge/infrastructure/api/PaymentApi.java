@@ -9,6 +9,8 @@ import com.techchallenge.infrastructure.api.mapper.PaymentMapper;
 import com.techchallenge.infrastructure.api.request.PayRequest;
 import com.techchallenge.infrastructure.api.request.PaymentResponse;
 import com.techchallenge.infrastructure.api.request.PaymentWebhookRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class PaymentApi {
 	private PaymentUseCase paymentUseCase;
 	private PaymentMapper mapper;
 
+	@Value("${notification.url}")
+	private String notificationUrl;
+
 	public PaymentApi(PaymentUseCase paymentUseCase, PaymentMapper mapper) {
 		super();
 		this.paymentUseCase = paymentUseCase;
@@ -34,7 +39,11 @@ public class PaymentApi {
 	@PostMapping("/pay")
 	public ResponseEntity<InputStreamResource> checkout(@RequestBody PayRequest payRequest, UriComponentsBuilder uri )  {
 		UriComponents uriComponents = uri.path("/api/v1/payment/webhook").build();
-		PaymentQRCode qrCode = paymentUseCase.generatePayment(payRequest.externalReference(), uriComponents.toUriString());
+		String notification = uriComponents.toUriString();
+		if(StringUtils.isNotBlank(notificationUrl)){
+			notification = notificationUrl;
+		}
+		PaymentQRCode qrCode = paymentUseCase.generatePayment(payRequest.externalReference(), notification);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(new InputStreamResource(qrCode.getQrCode()));
 	}
 
