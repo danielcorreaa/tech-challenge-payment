@@ -101,12 +101,12 @@ jobs:
 
   deploy-qa:
       needs: docker-pull-image
-      if: github.ref == 'refs/heads/develop'
+      if: github.ref == 'refs/heads/release'
       uses: ./.github/workflows/deploy-release.yml
       secrets: inherit
 
   deploy-prod:
       needs: docker-pull-image
-      if: github.ref == 'refs/heads/develop'
+      if: github.ref == 'refs/heads/main'
       uses: ./.github/workflows/deploy-prod.yml
       secrets: inherit
