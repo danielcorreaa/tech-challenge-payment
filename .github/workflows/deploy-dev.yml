@@ -23,7 +23,7 @@ jobs:
 
       - run: kubectl apply -f k8s/payment-deployment.yaml
       - run: kubectl apply -f k8s/payment-service.yaml
-      - run: kubectl set image deployment/payment app=daniel36/tech-challenge-payment:${{github.run_number}}
+      - run: kubectl set image deployment/payment payment=daniel36/tech-challenge-payment:${{github.run_number}}
       - run: kubectl apply -f k8s/payment-hpa.yaml
       - run: kubectl get svc
 
