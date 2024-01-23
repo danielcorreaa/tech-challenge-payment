@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class OrderMLMapper {
     public OrdersML toOrdersML(Payment payment) {
-        return  new OrdersML(payment.getExternalReference(),
+        return new OrdersML(payment.getExternalReference(),
                 payment.getTitle(), payment.getDescription(), payment.getNotificationUrl(),
                 payment.getTotalAmount(), toItemsMl(payment.getItems()));
     }

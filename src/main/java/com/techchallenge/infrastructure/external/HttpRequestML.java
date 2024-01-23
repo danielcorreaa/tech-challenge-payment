@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "orders", url = "${api.mercadolivre}")
+@FeignClient(value = "orders", url = "${api.mercadolivre.url}")
 public interface HttpRequestML {
 	
 	@PostMapping("/${api.mercadolivre.orders}")

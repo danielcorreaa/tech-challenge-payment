@@ -28,6 +28,7 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 
 	@Override
 	public void save(Payment payment) {
+
 		paymentGateway.insert(payment);
 	}
 
@@ -41,10 +42,8 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 	public PaymentQRCode generatePayment(String order, String uri) {
 		Payment payment = paymentGateway.findById(order).orElseThrow(() ->
 				new NotFoundException("Payment not found for send with order: "+order));
-		if(Optional.ofNullable(payment.getNotificationUrl()).isEmpty()){
-			payment.setNotificationUrl(uri);
-			save(payment);
-		}
+		payment.setNotificationUrl(uri);
+		save(payment);
 		return paymentExternalGateway.sendPayment(payment)
 				.orElseThrow(() -> new BusinessException("Fail to get QR code from mercado livre"));
 	}

@@ -69,11 +69,6 @@ public class KafkaConfig {
     }
 
     @Bean
-    public PaymentProduce paymentProduce(MessageUseCase messageUseCase, PaymentUseCase paymentUseCase){
-        return new PaymentProduce(messageUseCase,paymentUseCase);
-    }
-
-    @Bean
     public TopicProducer<MessagePayment> topicProducer(){
         return new TopicProducer<>(kafkaTemplate(), topic);
     }

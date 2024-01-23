@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @EnableKafka
 @EnableFeignClients
-@SpringBootApplication(exclude = MongoAutoConfiguration.class)
+@SpringBootApplication
 public class SpringApp {
 
 	public static void main(String[] args) {
