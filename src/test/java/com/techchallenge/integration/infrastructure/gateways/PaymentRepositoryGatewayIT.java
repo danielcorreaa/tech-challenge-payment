@@ -5,7 +5,7 @@ import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration( classes = {MongoTestConfig.class})
 @TestPropertySource(locations = "classpath:/application-test.properties")
 @Testcontainers
-class PaymentRepositoryGatewayTest {
+class PaymentRepositoryGatewayIT {
 
 
     PaymentRepositoryGateway paymentRepositoryGateway;
@@ -42,7 +42,7 @@ class PaymentRepositoryGatewayTest {
     @Autowired
     private PaymentDocumentMapper mapper;
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
 
     @Container
@@ -69,7 +69,7 @@ class PaymentRepositoryGatewayTest {
     @BeforeEach
     void init(){
         paymentRepositoryGateway = new PaymentRepositoryGateway(paymentRepository, mapper);
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         clear();
     }
 

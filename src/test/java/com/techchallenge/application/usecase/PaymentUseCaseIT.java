@@ -17,7 +17,7 @@ import com.techchallenge.infrastructure.gateways.PaymentIntegrationMLGateway;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration( classes = {MongoTestConfig.class})
 @TestPropertySource(locations = "classpath:/application-test.properties")
 @Testcontainers
-class PaymentUseCaseIntegrationTest {
+class PaymentUseCaseIT {
 
     PaymentUseCase paymentUseCase;
 
@@ -63,7 +63,7 @@ class PaymentUseCaseIntegrationTest {
     @Autowired
     PaymentRepository paymentRepository;
     PaymentDocumentMapper paymentDocumentMapper;
-    ObjectMock mock;
+    PaymentHelper mock;
 
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:6.0.2"))
@@ -88,7 +88,7 @@ class PaymentUseCaseIntegrationTest {
 
     @BeforeEach
     void init(){
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         orderMLMapper = new OrderMLMapper();
         paymentExternalGateway = new PaymentIntegrationMLGateway(httpRequestML,orderMLMapper);
         ReflectionTestUtils.setField(paymentExternalGateway, "token", "test");

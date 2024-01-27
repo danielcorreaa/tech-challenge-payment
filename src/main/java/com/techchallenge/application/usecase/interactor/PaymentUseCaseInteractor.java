@@ -64,6 +64,11 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 		return paymentGateway.findNotSendAndIsPaid();
 	}
 
+	@Override
+	public void create(Payment payment) {
+		paymentGateway.insert(payment);
+	}
+
 	private void isNullOrEmpty(String resource) {
 		if(Optional.ofNullable(resource).orElse("").isEmpty()){
 			throw new BusinessException("Resource can't be null!");

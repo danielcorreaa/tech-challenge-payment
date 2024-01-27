@@ -8,7 +8,7 @@ import com.techchallenge.core.exceptions.NotFoundException;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.entity.PaymentQRCode;
 import com.techchallenge.infrastructure.external.dtos.PaymentResponseML;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +31,12 @@ class PaymentUseCaseTest {
     PaymentGateway paymentGateway;
 
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
     @BeforeEach
     void init(){
         paymentUseCase = new PaymentUseCaseInteractor(paymentExternalGateway, paymentGateway);
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
     }
 
     @Test

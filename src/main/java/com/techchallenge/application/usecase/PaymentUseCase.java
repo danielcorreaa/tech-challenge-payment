@@ -17,5 +17,6 @@ public interface PaymentUseCase {
 
 	List<Payment> findNotSendAndIsPaid();
 
-	
+
+    void create(Payment payment);
 }
