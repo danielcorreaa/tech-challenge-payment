@@ -47,20 +47,6 @@ public class StepDefinition {
         response.then().statusCode(HttpStatus.CREATED.value());
     }
 
-    @Dado("que quero realizar um pagamento")
-    public void que_quero_realizar_um_pagamento() {
-        payRequest = new PayRequest("854758");
-    }
-    @Dado("existe um pagamento cadastrado")
-    public void existe_um_pagamento_cadastrado() {
-        response = given().contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(payRequest).when().post(ENDPOINT_PAYMENT+"/pay");
-    }
-    @Entao("quero enviar para o mercado livre a requisição e receber um QR code")
-    public void quero_enviar_para_o_mercado_livre_a_requisição_e_receber_um_qr_code() {
-        response.then().statusCode(HttpStatus.OK.value()).contentType(MediaType.IMAGE_PNG.getType());
-    }
-
     @Dado("que tenho um pagamento cadastrado")
     public void que_tenho_um_pagamento_cadastrado() {
         externalReference = "854758";
