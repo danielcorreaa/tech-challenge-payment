@@ -10,13 +10,11 @@ import com.techchallenge.core.response.JsonUtils;
 import com.techchallenge.core.response.ObjectMapperConfig;
 import com.techchallenge.core.response.Result;
 import com.techchallenge.domain.entity.Payment;
-import com.techchallenge.domain.valueobject.Item;
 import com.techchallenge.infrastructure.api.mapper.PaymentMapper;
 import com.techchallenge.infrastructure.api.request.PayRequest;
 import com.techchallenge.infrastructure.api.request.PaymentResponse;
 import com.techchallenge.infrastructure.api.request.PaymentWebhookRequest;
 import com.techchallenge.infrastructure.external.HttpRequestML;
-import com.techchallenge.infrastructure.external.dtos.OrderResponseML;
 import com.techchallenge.infrastructure.external.dtos.OrdersML;
 import com.techchallenge.infrastructure.external.mapper.OrderMLMapper;
 import com.techchallenge.infrastructure.gateways.PaymentIntegrationMLGateway;
@@ -24,7 +22,7 @@ import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import feign.FeignException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -38,8 +36,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,12 +67,12 @@ class PaymentApiTest {
 
     JsonUtils jsonUtils;
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
 
     @BeforeEach
     void init(){
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         jsonUtils = new JsonUtils(new ObjectMapperConfig().objectMapper());
         paymentDocumentMapper = new PaymentDocumentMapper();
         paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);

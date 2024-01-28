@@ -6,7 +6,7 @@ import com.techchallenge.application.usecase.PaymentUseCase;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 @ContextConfiguration( classes = {KafkaTestConfig.class})
 @TestPropertySource(locations = {"classpath:application-test.properties"})
 @Testcontainers
-class PaymentProduceIntegrationTest {
+class PaymentProduceIT {
 
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:6.0.2"))
@@ -62,7 +62,7 @@ class PaymentProduceIntegrationTest {
     }
 
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
     @Autowired
     PaymentProduce paymentProduce;
@@ -81,7 +81,7 @@ class PaymentProduceIntegrationTest {
 
     @BeforeEach
     void init(){
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         clearDb();
     }
 

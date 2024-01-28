@@ -1,7 +1,11 @@
 package com.techchallenge.util;
 
+import com.techchallenge.core.response.JsonUtils;
+import com.techchallenge.core.response.ObjectMapperConfig;
+import com.techchallenge.core.utils.FileUtils;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.valueobject.Item;
+import com.techchallenge.infrastructure.api.request.PaymentRequest;
 import com.techchallenge.infrastructure.external.dtos.OrderResponseML;
 import com.techchallenge.infrastructure.external.dtos.PaymentResponseML;
 import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
@@ -9,7 +13,13 @@ import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ObjectMock {
+public class PaymentHelper {
+
+    JsonUtils jsonUtils;
+
+    public PaymentHelper() {
+        jsonUtils = new JsonUtils(new ObjectMapperConfig().objectMapper());
+    }
 
     public Payment getPaymentMock(String id){
         return new Payment(id, "test", "test", null,
@@ -49,6 +59,12 @@ public class ObjectMock {
 
     public PaymentResponseML getPaymentResponseML(String externalReference){
         return  PaymentResponseML.builder().status("paid").externalReference(externalReference).build();
+    }
+
+    public PaymentRequest paymentRequest(){
+        PaymentRequest payment = jsonUtils.parse(new FileUtils().getFile("/data/payment.json"),
+                PaymentRequest.class).get();
+        return payment;
     }
 
 

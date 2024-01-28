@@ -13,7 +13,7 @@ import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +22,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.data.domain.Sort;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -57,11 +54,11 @@ class PaymentProduceTest {
     @Mock
     TopicProducer<MessagePayment> topicProducer;
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
     @BeforeEach
     void init(){
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         paymentDocumentMapper = new PaymentDocumentMapper();
 
         paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);

@@ -11,7 +11,7 @@ import com.techchallenge.core.utils.FileUtils;
 import com.techchallenge.domain.entity.Payment;
 
 import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
-import com.techchallenge.util.ObjectMock;
+import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration( classes = {KafkaTestConfig.class})
 @TestPropertySource(locations = {"classpath:application-test.properties"})
 @Testcontainers
-class OrderConsumerIntegrationTest {
+class OrderConsumerIT {
 
 
     @Container
@@ -84,7 +84,7 @@ class OrderConsumerIntegrationTest {
 
     String description = "Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas";
 
-    ObjectMock mock;
+    PaymentHelper mock;
 
     JsonUtils jsonUtils;
 
@@ -94,7 +94,7 @@ class OrderConsumerIntegrationTest {
     @BeforeEach
     void init(){
         jsonUtils = new JsonUtils(new ObjectMapperConfig().objectMapper());
-        mock = new ObjectMock();
+        mock = new PaymentHelper();
         ReflectionTestUtils.setField(orderConsumer, "title", "Lanchonete Tech Challenge");
         ReflectionTestUtils.setField(orderConsumer, "description", "Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas");
     }
