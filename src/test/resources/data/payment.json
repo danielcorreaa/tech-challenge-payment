@@ -1,0 +1,29 @@
+{
+  "external_reference": "854758",
+  "notification_url": "https://eo5swulfz2hoccg.m.pipedream.net",
+  "total_amount": 20.20,
+  "title": "Lanchonete Checkout",
+  "description": "Checkout",
+  "items": [
+    {
+      "sku_number": "1",
+      "unit_price": 10.10,
+      "unit_measure": "unit",
+      "total_amount": 10.10,
+      "category": "LANCHE",
+      "title": "X SALADA",
+      "description": "lanche",
+      "quantity": 1
+    },
+    {
+      "sku_number": "2",
+      "unit_price": 10.10,
+      "unit_measure": "unit",
+      "total_amount": 10.10,
+      "category": "BEBIDA",
+      "title": "COCA COLA",
+      "description": "lanche",
+      "quantity": 1
+    }
+  ]
+}
