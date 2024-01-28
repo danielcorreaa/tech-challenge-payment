@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "number"
+    },
+    "body": {
+      "type": "object",
+      "properties": {
+        "externalReference": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "notificationUrl": {
+          "type": "string"
+        },
+        "totalAmount": {
+          "type": "number"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "skuNumber": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "unitPrice": {
+                "type": "number"
+              },
+              "quantity": {
+                "type": "number"
+              },
+              "unitMeasure": {
+                "type": "string"
+              },
+              "totalAmount": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "skuNumber",
+              "category",
+              "title",
+              "description",
+              "unitPrice",
+              "quantity",
+              "unitMeasure",
+              "totalAmount"
+            ]
+          }
+        },
+        "createTime": {
+          "type": "string"
+        },
+        "sent": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "externalReference",
+        "title",
+        "description",
+        "notificationUrl",
+        "totalAmount",
+        "items",
+        "createTime",
+        "sent"
+      ]
+    }
+  },
+  "required": [
+    "code",
+    "body"
+  ]
+}
