@@ -19,7 +19,10 @@ public class PaymentDocumentMapper {
                 paymentDocument.getOrderStatus(),
                 toItems(paymentDocument.getItems()),
                 paymentDocument.getCreateTime(),
-                paymentDocument.getSent());
+                paymentDocument.getSent(),
+                paymentDocument.getExpirationDate(),
+                paymentDocument.getCpfCustomer()
+                );
     }
 
     public Item toItem(ItemDocument itemDocument){
@@ -46,6 +49,8 @@ public class PaymentDocumentMapper {
                 .sent(payment.getSent())
                 .createTime(payment.getCreateTime())
                 .id(payment.getExternalReference())
+                .expirationDate(payment.getExpirationDate())
+                .cpfCustomer(payment.getCpfCustomer().orElse(""))
                 .build();
     }
 

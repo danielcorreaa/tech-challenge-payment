@@ -27,6 +27,8 @@ public class PaymentDocument {
 	private List<ItemDocument> items;
 	private LocalDateTime createTime;
 	private Boolean sent;
+	private LocalDateTime expirationDate;
+	private String cpfCustomer;
 
 
 }

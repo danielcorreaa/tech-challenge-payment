@@ -6,14 +6,18 @@ import com.techchallenge.infrastructure.external.dtos.ItemsML;
 import com.techchallenge.infrastructure.external.dtos.OrdersML;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
 public class OrderMLMapper {
     public OrdersML toOrdersML(Payment payment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        String expirationDateString = payment.getExpirationDate().format(formatter) + "-03:00";
         return new OrdersML(payment.getExternalReference(),
                 payment.getTitle(), payment.getDescription(), payment.getNotificationUrl(),
-                payment.getTotalAmount(), toItemsMl(payment.getItems()));
+                payment.getTotalAmount(), expirationDateString, toItemsMl(payment.getItems()));
     }
 
     public ItemsML toItemMl(Item item){

@@ -13,7 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import java.util.concurrent.CountDownLatch;
 
 @Log4j2
-public class OrderConsumer {
+public class  OrderConsumer {
 
     @Value("${lanchonete.title}")
     private String title;
@@ -34,6 +34,7 @@ public class OrderConsumer {
     @KafkaListener(topics = "${kafka.topic.consumer.orders}", groupId = "${kafka.topic.consumer.groupId}",
             containerFactory = "kafkaListenerContainerFactoryOrderDto")
     public void listenOrders(@Payload OrderDto orderDto, Acknowledgment ack) {
+
         log.info("Received Message: " + orderDto.toString());
         try {
             paymentUseCase.save(mapper.toPayment(title, description, orderDto));

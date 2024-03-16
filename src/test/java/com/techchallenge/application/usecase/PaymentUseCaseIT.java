@@ -16,6 +16,7 @@ import com.techchallenge.infrastructure.external.mapper.OrderMLMapper;
 import com.techchallenge.infrastructure.gateways.PaymentIntegrationMLGateway;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
+import com.techchallenge.infrastructure.persistence.repository.PaymentCollection;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.AfterAll;
@@ -65,6 +66,7 @@ class PaymentUseCaseIT {
     PaymentDocumentMapper paymentDocumentMapper;
     PaymentHelper mock;
 
+    private PaymentCollection paymentCollection;
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:6.0.2"))
             .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(20)));
@@ -94,7 +96,7 @@ class PaymentUseCaseIT {
         ReflectionTestUtils.setField(paymentExternalGateway, "token", "test");
 
         paymentDocumentMapper = new PaymentDocumentMapper();
-        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);
+        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper, paymentCollection);
 
         paymentUseCase = new PaymentUseCaseInteractor(paymentExternalGateway, paymentGateway);
 
@@ -127,7 +129,7 @@ class PaymentUseCaseIT {
     void testGeneratePaymentAndResponseQRCode() {
         OrderResponseML responseML = mock.getOrderResponseML();
         when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(responseML);
-        PaymentQRCode paymentQRCode = paymentUseCase.generatePayment("1230003", "http-test-url-for-webhook");
+        PaymentQRCode paymentQRCode = paymentUseCase.generatePayment("1230003", "http-test-url-for-webhook", 2L);
         assertNotNull(paymentQRCode.getQrCode());
     }
 
@@ -135,14 +137,15 @@ class PaymentUseCaseIT {
     void testGeneratePaymentAndResponseInvalidQRCode() {
         OrderResponseML responseML = new OrderResponseML("2121", "");
         when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(responseML);
-        var ex = assertThrows(BusinessException.class, () -> paymentUseCase.generatePayment("1230003", "http-test-url-for-webhook"));
+        var ex = assertThrows(BusinessException.class, () -> paymentUseCase
+                .generatePayment("1230003", "http-test-url-for-webhook", 2L));
         assertEquals("Fail to generate QR Code", ex.getMessage());
     }
 
     @Test
     void testGeneratePaymentFailToFindPayment() {
         var ex = assertThrows(NotFoundException.class, () ->  paymentUseCase
-                .generatePayment("1230004", "http-test-url-for-webhook"));
+                .generatePayment("1230004", "http-test-url-for-webhook", 2L));
 
         assertEquals("Payment not found for send with order: 1230004", ex.getMessage());
     }

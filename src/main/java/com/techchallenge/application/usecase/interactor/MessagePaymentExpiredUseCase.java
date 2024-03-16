@@ -6,18 +6,17 @@ import com.techchallenge.domain.entity.MessagePayment;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.support.SendResult;
 
-public class MessageUseCaseInteractor implements MessageUseCase {
+public class MessagePaymentExpiredUseCase implements MessageUseCase {
 
-    @Qualifier(value = "payment-success")
-    private TopicProducer<MessagePayment> topicProducer;
+    @Qualifier(value = "payment-error")
+    private TopicProducer<MessagePayment> topicProducerError;
 
-    public MessageUseCaseInteractor(TopicProducer<MessagePayment> topicProducer) {
-        this.topicProducer = topicProducer;
+    public MessagePaymentExpiredUseCase(TopicProducer<MessagePayment> topicProducerError) {
+        this.topicProducerError = topicProducerError;
     }
 
     @Override
     public SendResult<String, MessagePayment> send(MessagePayment messagePayment) {
-        return topicProducer.produce(messagePayment.getExternalReference(), messagePayment);
+        return topicProducerError.produce(messagePayment.getExternalReference(), messagePayment);
     }
-
 }

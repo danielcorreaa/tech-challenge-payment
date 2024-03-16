@@ -21,6 +21,7 @@ import com.techchallenge.infrastructure.gateways.PaymentIntegrationMLGateway;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
+import com.techchallenge.infrastructure.persistence.repository.PaymentCollection;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import com.techchallenge.util.PaymentHelper;
 import feign.FeignException;
@@ -65,6 +66,9 @@ class PaymentApiTest {
     private HttpRequestML httpRequestML;
     private OrderMLMapper orderMLMapper;
 
+    @Mock
+    private PaymentCollection paymentCollection;
+
     JsonUtils jsonUtils;
 
     PaymentHelper mock;
@@ -75,7 +79,7 @@ class PaymentApiTest {
         mock = new PaymentHelper();
         jsonUtils = new JsonUtils(new ObjectMapperConfig().objectMapper());
         paymentDocumentMapper = new PaymentDocumentMapper();
-        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);
+        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper, paymentCollection);
 
         orderMLMapper = new OrderMLMapper();
         paymentExternalGateway = new PaymentIntegrationMLGateway(httpRequestML, orderMLMapper);
@@ -84,6 +88,7 @@ class PaymentApiTest {
 
         paymentMapper = new PaymentMapper();
         paymentApi = new PaymentApi(paymentUseCase, paymentMapper);
+        ReflectionTestUtils.setField(paymentApi, "minuteToExpirations", 2L);
         mockMvc = MockMvcBuilders.standaloneSetup(paymentApi).setControllerAdvice(new ExceptionHandlerConfig()).build();
     }
 

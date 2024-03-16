@@ -70,7 +70,7 @@ class PaymentUseCaseTest {
         when(paymentExternalGateway.sendPayment(payment)).thenReturn(Optional.of(new PaymentQRCode(mock(InputStream.class))));
         when(paymentGateway.findById("5678")).thenReturn(Optional.of(payment));
 
-        PaymentQRCode paymentQRCode = paymentUseCase.generatePayment("5678", "http-test-url-for-webhook");
+        PaymentQRCode paymentQRCode = paymentUseCase.generatePayment("5678", "http-test-url-for-webhook",2L);
 
         verify(paymentExternalGateway, times(1)).sendPayment(payment);
         verify(paymentGateway, times(1)).findById("5678");
@@ -88,7 +88,7 @@ class PaymentUseCaseTest {
                 when(paymentGateway.findById("5678")).thenReturn(Optional.empty());
 
         var ex =assertThrows(NotFoundException.class, () ->  paymentUseCase
-                .generatePayment("5678", "http-test-url-for-webhook"));
+                .generatePayment("5678", "http-test-url-for-webhook", 2L));
 
         verify(paymentExternalGateway, never()).sendPayment(payment);
         verify(paymentGateway, times(1)).findById("5678");

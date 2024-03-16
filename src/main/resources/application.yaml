@@ -27,6 +27,8 @@ kafka:
       groupId: tech
     producer:
       payment: tech.payment
+      error:
+        payment: tech.error.payment
 
 lanchonete:
   description: Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas
@@ -42,3 +44,8 @@ swagger:
 
 notification:
   url:
+
+logging:
+  level:
+    com.techchallenge.infrastructure.external:
+      HttpRequestML: DEBUG

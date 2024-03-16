@@ -1,6 +1,9 @@
 package com.techchallenge;
 
 import com.techchallenge.config.KafkaConfig;
+import com.techchallenge.core.kafka.produce.TopicProducer;
+import com.techchallenge.domain.entity.MessagePayment;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +23,7 @@ public class KafkaTestConfig {
 
     @Value(value = "${kafka.topic.consumer.groupId}")
     private String groupId;
+
 
 
 

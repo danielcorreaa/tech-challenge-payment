@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8087
 spring:
   application:
     name: tech-challenge-product
@@ -34,3 +34,7 @@ lanchonete:
 
 notification:
   url: https://eogk4e0gy2wck7w.m.pipedream.net
+
+time:
+  expiration:
+    payment: 1
