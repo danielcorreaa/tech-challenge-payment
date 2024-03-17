@@ -149,12 +149,14 @@ No endpoint de pagamento não foi encontrada vunerabilidades
   POST api/v1/payment/pay
   ```
 
-- [@report-payment](https://danielcorreaa.github.io/tech-challenge-payment/before/pay/report.html)
+- [@report-pay](https://danielcorreaa.github.io/tech-challenge-payment/before/pay/report.html)
 
 
 No endpoint webhook foi encontrado uma vunerabilidade de nivel baixo
 
-
+```http
+  POST api/v1/payment/webhook
+  ```
 - [@report-webhook](https://danielcorreaa.github.io/tech-challenge-payment/before/webhook/report.html)
 
 
