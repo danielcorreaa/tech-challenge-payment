@@ -42,8 +42,6 @@ swagger:
     name: Daniel A. Correa
     email: daniel.cor@outlook.com
 
-
-
 notification:
   url:
 
@@ -51,3 +49,7 @@ logging:
   level:
     com.techchallenge.infrastructure.external:
       HttpRequestML: DEBUG
+
+time:
+  expiration:
+    payment: 1
