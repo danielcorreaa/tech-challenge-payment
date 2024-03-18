@@ -24,9 +24,11 @@ kafka:
   topic:
     consumer:
       orders: tech.orders
-      groupId: groupId
+      groupId: tech
     producer:
       payment: tech.payment
+      error:
+        payment: tech.error.payment
 
 lanchonete:
   description: Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas
