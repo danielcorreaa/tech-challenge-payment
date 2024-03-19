@@ -30,6 +30,9 @@ public class KafkaConfig {
     @Value(value = "${kafka.topic.producer.payment}")
     private String topic;
 
+    @Value(value = "${kafka.topic.producer.error.payment}")
+    private String topicError;
+
     @Value(value = "${kafka.topic.consumer.groupId}")
     private String groupId;
 
@@ -68,14 +71,14 @@ public class KafkaConfig {
         return new OrderConsumer(paymentUseCase,mapper);
     }
 
-    @Bean
+    @Bean(name = "payment-success")
     public TopicProducer<MessagePayment> topicProducer(){
         return new TopicProducer<>(kafkaTemplate(), topic);
     }
 
-    @Bean
-    public MessageUseCase messageUseCase(PaymentGateway paymentGateway){
-        return  new MessageUseCaseInteractor(topicProducer());
+    @Bean(name = "payment-error")
+    public TopicProducer<MessagePayment> topicProducerError(){
+        return new TopicProducer<>(kafkaTemplate(), topicError);
     }
 
     public <T> JsonDeserializer<T> jsonDeserializer(JsonDeserializer<T> deserializer){

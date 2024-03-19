@@ -10,6 +10,7 @@ import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.domain.entity.PaymentQRCode;
 import com.techchallenge.infrastructure.external.dtos.PaymentResponseML;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,6 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 
 	@Override
 	public void save(Payment payment) {
-
 		paymentGateway.insert(payment);
 	}
 
@@ -39,10 +39,14 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 	}
 
 	@Override
-	public PaymentQRCode generatePayment(String order, String uri) {
+	public PaymentQRCode generatePayment(String order, String uri, Long minuteToExpirations) {
 		Payment payment = paymentGateway.findById(order).orElseThrow(() ->
 				new NotFoundException("Payment not found for send with order: "+order));
+		if(Optional.ofNullable(payment.getOrderStatus()).orElse("").equals("expired")){
+			throw new BusinessException("Payment expired to order: "+ order);
+		}
 		payment.setNotificationUrl(uri);
+		payment.setExpirationDate(LocalDateTime.now().plusMinutes(minuteToExpirations));
 		save(payment);
 		return paymentExternalGateway.sendPayment(payment)
 				.orElseThrow(() -> new BusinessException("Fail to get QR code from mercado livre"));
@@ -62,6 +66,11 @@ public class PaymentUseCaseInteractor implements PaymentUseCase {
 	@Override
 	public List<Payment> findNotSendAndIsPaid() {
 		return paymentGateway.findNotSendAndIsPaid();
+	}
+
+	@Override
+	public List<Payment> findPaymentExpired(LocalDateTime now) {
+		return paymentGateway.findPaymentExpired(now);
 	}
 
 	@Override

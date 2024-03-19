@@ -16,7 +16,7 @@ public class PaymentMapper {
 	public Payment toPayment(PaymentRequest request) {
 		return new Payment(request.externalReference(),
 				request.title(), request.description(), request.notificationUrl(),
-				toItems(request.items()));
+				toItems(request.items()), request.cpfCustomer());
 	}
 	public Item toItem(ItemsRequest itemsRequest){
 		return new Item(itemsRequest.skuNumber(),
@@ -41,7 +41,9 @@ public class PaymentMapper {
 				.items(toItemsResponse(payment.getItems()))
 				.notificationUrl(payment.getNotificationUrl())
 				.description(payment.getDescription())
-				.title(payment.getTitle()).build();
+				.title(payment.getTitle())
+				.expirationDate(payment.getExpirationDate())
+				.build();
 	}
 
 

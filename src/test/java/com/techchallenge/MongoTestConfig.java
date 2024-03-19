@@ -41,10 +41,18 @@ public class MongoTestConfig {
         return mock(MessageUseCaseInteractor.class);
     }
 
+
     @Primary
-    @Bean
+    @Bean(name = "payment-success")
     public TopicProducer<MessagePayment> topicProducer(){
         return mock(TopicProducer.class);
+    }
+
+    @Primary
+    @Bean(name = "payment-error")
+    public TopicProducer<MessagePayment> topicProducerError(){
+        return mock(TopicProducer.class);
+
     }
 
     @Primary

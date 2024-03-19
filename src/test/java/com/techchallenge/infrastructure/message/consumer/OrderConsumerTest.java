@@ -15,6 +15,7 @@ import com.techchallenge.infrastructure.message.consumer.dto.OrderDto;
 import com.techchallenge.infrastructure.message.consumer.mapper.OrderMessageMapper;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
+import com.techchallenge.infrastructure.persistence.repository.PaymentCollection;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,9 @@ class OrderConsumerTest {
 
     PaymentDocumentMapper paymentDocumentMapper;
 
+    @Mock
+    private PaymentCollection paymentCollection;
+
     String title = "Lanchonete Tech Challenge";
 
     String description = "Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas";
@@ -63,7 +67,7 @@ class OrderConsumerTest {
 
         paymentDocumentMapper = new PaymentDocumentMapper();
         mapper = new OrderMessageMapper();
-        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);
+        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper, paymentCollection);
         paymentUseCase = new PaymentUseCaseInteractor(paymentExternalGateway, paymentGateway);
         orderConsumer = new OrderConsumer(paymentUseCase, mapper);
         ReflectionTestUtils.setField(orderConsumer, "title", "Lanchonete Tech Challenge");

@@ -26,7 +26,12 @@ public record PaymentResponse(
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime createTime,
-        Boolean sent) {
+        Boolean sent,
+
+        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+        LocalDateTime expirationDate) {
 
 
 }
