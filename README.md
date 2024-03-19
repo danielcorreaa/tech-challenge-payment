@@ -1,4 +1,3 @@
-# 
 # Microsserviço tech-challenge-payment
 
 Microsserviço responsável pelo gerenciamento de pagamentos
@@ -7,6 +6,12 @@ Microsserviço responsável pelo gerenciamento de pagamentos
 ## Autores
 
 - [@danielcorreaa](https://github.com/danielcorreaa)
+
+
+## Stack utilizada
+
+
+**Back-end:** Java, Spring Boot, Mongodb, Kafka
 
 
 ## Documentação da API
@@ -41,10 +46,42 @@ Mercado pago vai retornar um endpoint no campo resource, com o status do pagamen
 | `externalReference` | `string` |  **Obrigatório** Identificador do pedido |
 
 
-## Stack utilizada
+
+## OWASP ZAP
+*Resultado ataques na api de pagamento e webhook*
+
+No endpoint de pagamento não foi encontrada vunerabilidades
+
+```http
+  POST api/v1/payment/pay
+  ```
+
+- [@report-pay](https://danielcorreaa.github.io/tech-challenge-payment/before/pay/report.html)
 
 
-**Back-end:** Java, Spring Boot, Mongodb, Kafka
+No endpoint webhook foi encontrado uma vunerabilidade de nivel baixo
+
+```http
+  POST api/v1/payment/webhook
+  ```
+- [@report-webhook](https://danielcorreaa.github.io/tech-challenge-payment/before/webhook/report.html)
+
+
+
+## Documentação Saga
+
+### Padrão escolhido: Coreografia 
+
+#### Razão de utilizar a coreografia
+*Escolhi o padrão coreografado para evitar deixar tudo centralizado no serviço de pedidos, no caso de acontecer alguma falha no serviço de pedidos toda a operação de notificar cliente e enviar os pedidos pagos para a cozinha seria paralizada, com a coreografia mesmo que tenha algum problema com o serviço de pedidos, a cozinha ainda recebe os pedidos com pagamentos aprovados, nao parando a produção de pedidos pagos, e os clientes recebem notificaçao de problemas com o pagamento.*
+
+#### Desenho da solução
+
+- [@Desenho Padrão Saga coreografado.](https://danielcorreaa.github.io/tech-challenge-production/images/saga-diagrama.png)
+
+![Desenho Padrão Saga coreografado.](/images/saga-diagrama.png)
+
+
 
 
 ## Rodando localmente
@@ -84,7 +121,7 @@ No navegador
 Clone o projeto com a infraestrutura
 
 ```bash
-  git clone danielcorreaa/tech-challenge-infra-terraform-kubernetes
+  git clone https://github.com/danielcorreaa/tech-challenge-infra-terraform-kubernetes.git
 ```
 Entre no diretório do projeto
 
@@ -135,40 +172,3 @@ Execute os comandos
 - run: kubectl get svc
 
 ````
-
-
-
-
-
-## OWASP ZAP
-*Resultado ataques na api de pagamento e webhook*
-
-No endpoint de pagamento não foi encontrada vunerabilidades
-
-```http
-  POST api/v1/payment/pay
-  ```
-
-- [@report-pay](https://danielcorreaa.github.io/tech-challenge-payment/before/pay/report.html)
-
-
-No endpoint webhook foi encontrado uma vunerabilidade de nivel baixo
-
-```http
-  POST api/v1/payment/webhook
-  ```
-- [@report-webhook](https://danielcorreaa.github.io/tech-challenge-payment/before/webhook/report.html)
-
-
-
-## Documentação Saga
-
-### Padrão escolhido: Coreografia 
-
-#### Razão de utilizar a coreografia
-*Escolhi o padrão coreografado para evitar deixar tudo centralizado no serviço de pedidos, no caso de acontecer alguma falha no serviço de pedidos toda a operação de notificar cliente e enviar os pedidos pagos para a cozinha seria paralizada, com a coreografia mesmo que tenha algum problema com o serviço de pedidos, a cozinha ainda recebe os pedidos com pagamentos aprovados, nao parando a produção de pedidos pagos, e os clientes recebem notificaçao de problemas com o pagamento.*
-
-#### Desenho da solução
-
-![Desenho Padrão Saga coreografado.](/images/saga-diagrama.png)
-
