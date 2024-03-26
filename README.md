@@ -20,7 +20,7 @@ Microsserviço responsável pelo gerenciamento de pagamentos
 #### Pagamento do pedido 
 
 ```http
-  POST api/v1/payment/pay
+  POST payment/api/v1/pay
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
@@ -31,7 +31,7 @@ Microsserviço responsável pelo gerenciamento de pagamentos
 #### Webhook do pedido 
 
 ```http
-  POST api/v1/payment/webhook
+  POST payment/api/v1/webhook
 ```
 Mercado pago vai retornar um endpoint no campo resource, com o status do pagamento.
 
@@ -39,7 +39,7 @@ Mercado pago vai retornar um endpoint no campo resource, com o status do pagamen
 #### Buscar pagamento
 
 ```http
-  GET api/v1/payment/find/{externalReference}
+  GET payment/api/v1/find/{externalReference}
 ```
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -53,7 +53,7 @@ Mercado pago vai retornar um endpoint no campo resource, com o status do pagamen
 No endpoint de pagamento não foi encontrada vunerabilidades
 
 ```http
-  POST api/v1/payment/pay
+  POST payment/api/v1/pay
   ```
 
 - [@report-pay](https://danielcorreaa.github.io/tech-challenge-payment/before/pay/report.html)
@@ -62,7 +62,7 @@ No endpoint de pagamento não foi encontrada vunerabilidades
 No endpoint webhook foi encontrado uma vunerabilidade de nivel baixo
 
 ```http
-  POST api/v1/payment/webhook
+  POST payment/api/v1/webhook
   ```
 - [@report-webhook](https://danielcorreaa.github.io/tech-challenge-payment/before/webhook/report.html)
 
