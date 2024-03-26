@@ -4,13 +4,13 @@ metadata:
   name: payment
   labels:
     app: payment
-spec:
-  type: LoadBalancer
+spec:  
   selector:
     app: payment
   ports:
     - protocol: TCP
-      name: http
+      name: http      
       port: 8083
       targetPort: 8083
-      nodePort: 30002
+      nodePort: 30335
+  type: "NodePort"
