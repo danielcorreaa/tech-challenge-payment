@@ -51,7 +51,7 @@ public class PaymentApi {
 
 	@PostMapping("/pay")
 	public ResponseEntity<InputStreamResource> checkout(@RequestBody PayRequest payRequest, UriComponentsBuilder uri )  {
-		UriComponents uriComponents = uri.path("/api/v1/payment/webhook").build();
+		UriComponents uriComponents = uri.path("/payment/api/v1/webhook").build();
 		String notification = uriComponents.toUriString();
 		if(StringUtils.isNotBlank(notificationUrl)){
 			notification = notificationUrl;
