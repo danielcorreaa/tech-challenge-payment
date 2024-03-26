@@ -26,7 +26,7 @@ class RedirectApiTest {
 
     @Test
     void swagger() throws Exception {
-       mockMvc.perform(get("/"))
+       mockMvc.perform(get("/payment"))
                 .andExpect(redirectedUrl("swagger-ui.html"));
     }
 }

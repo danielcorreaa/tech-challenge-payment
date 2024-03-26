@@ -109,7 +109,7 @@ class PaymentApiTest {
 
             when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(mock.getOrderResponseML());
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isOk()).andReturn();
 
@@ -126,7 +126,7 @@ class PaymentApiTest {
 
             when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(mock.getOrderResponseML());
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isNotFound()).andReturn();
 
@@ -153,7 +153,7 @@ class PaymentApiTest {
 
             when(paymentRepository.save(any(PaymentDocument.class))).thenReturn(paymentDocument);
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isOk()).andReturn();
 
@@ -179,7 +179,7 @@ class PaymentApiTest {
 
             when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenThrow(FeignException.FeignClientException.class);
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isBadRequest()).andReturn();
 
@@ -207,7 +207,7 @@ class PaymentApiTest {
 
             when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(null);
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isBadRequest()).andReturn();
 
@@ -235,7 +235,7 @@ class PaymentApiTest {
 
             when(httpRequestML.sendOrderToMl(anyString(), any(OrdersML.class))).thenReturn(mock.getOrderResponseMLInvalid());
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/pay")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/pay")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isBadRequest()).andReturn();
 
@@ -263,7 +263,7 @@ class PaymentApiTest {
             when(httpRequestML.findPayment(anyString(), anyString())).thenReturn(mock.getPaymentResponseML(orderId));
             when(paymentRepository.findById(orderId)).thenReturn(Optional.of(paymentDocument));
             when(paymentRepository.save(any(PaymentDocument.class))).thenReturn(paymentDocument);
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/webhook")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/webhook")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isOk()).andReturn();
 
@@ -285,7 +285,7 @@ class PaymentApiTest {
             PaymentWebhookRequest paymentWebhookRequest = new PaymentWebhookRequest("", "", "");
             String jsonRequest = jsonUtils.toJson(paymentWebhookRequest).orElse("");
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/webhook")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/webhook")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isBadRequest()).andReturn();
 
@@ -310,7 +310,7 @@ class PaymentApiTest {
 
             when(httpRequestML.findPayment(anyString(), anyString())).thenThrow(FeignException.class);
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/webhook")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/webhook")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isBadRequest()).andReturn();
 
@@ -338,7 +338,7 @@ class PaymentApiTest {
             when(httpRequestML.findPayment(anyString(), anyString())).thenReturn(mock.getPaymentResponseML(orderId));
             when(paymentRepository.findById(orderId)).thenReturn(Optional.empty());
 
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/payment/webhook")
+            MvcResult mvcResult = mockMvc.perform(post("/payment/api/v1/webhook")
                             .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
                     .andExpect(status().isNotFound()).andReturn();
 
@@ -367,7 +367,7 @@ class PaymentApiTest {
 
             when(paymentRepository.findById(orderId)).thenReturn(Optional.of(paymentDocument));
 
-            MvcResult mvcResult = mockMvc.perform(get("/api/v1/payment/find/" + orderId)
+            MvcResult mvcResult = mockMvc.perform(get("/payment/api/v1/find/" + orderId)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk()).andReturn();
 
@@ -398,7 +398,7 @@ class PaymentApiTest {
 
             when(paymentRepository.findById(orderId)).thenReturn(Optional.empty());
 
-            MvcResult mvcResult = mockMvc.perform(get("/api/v1/payment/find/" + orderId)
+            MvcResult mvcResult = mockMvc.perform(get("/payment/api/v1/find/" + orderId)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isNotFound()).andReturn();
 

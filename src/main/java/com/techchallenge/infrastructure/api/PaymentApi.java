@@ -25,7 +25,7 @@ import java.io.IOException;
 
 @Log4j2
 @RestController
-@RequestMapping("api/v1/payment")
+@RequestMapping("payment/api/v1")
 public class PaymentApi {
 
 	private PaymentUseCase paymentUseCase;
