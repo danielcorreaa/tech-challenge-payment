@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: payment
-          image: daniel36/tech-challenge-payment:1.0
+          image: daniel36/tech-challenge-payment:11
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
