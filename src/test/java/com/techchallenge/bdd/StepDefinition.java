@@ -29,7 +29,7 @@ public class StepDefinition {
 
 
 
-    private String ENDPOINT_PAYMENT = "http://localhost:8085/payment/api/v1";
+    private String ENDPOINT_PAYMENT = "http://localhost:8085/tech-challenge-payment/payment/api/v1";
 
     @Dado("que quero criar um pagamento")
     public void que_quero_criar_um_pagamento() {
