@@ -12,6 +12,7 @@ import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.documents.PaymentDocument;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
+import com.techchallenge.infrastructure.persistence.repository.PaymentCollection;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import com.techchallenge.util.PaymentHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -54,6 +55,10 @@ class PaymentProduceTest {
     @Mock
     TopicProducer<MessagePayment> topicProducer;
 
+    @Mock
+
+    private  PaymentCollection paymentCollection;
+
     PaymentHelper mock;
 
     @BeforeEach
@@ -61,7 +66,7 @@ class PaymentProduceTest {
         mock = new PaymentHelper();
         paymentDocumentMapper = new PaymentDocumentMapper();
 
-        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper);
+        paymentGateway = new PaymentRepositoryGateway(paymentRepository, paymentDocumentMapper, paymentCollection);
         messageUseCase = new MessageUseCaseInteractor(topicProducer);
 
         paymentUseCase = new PaymentUseCaseInteractor(paymentExternalGateway, paymentGateway);
@@ -80,7 +85,7 @@ class PaymentProduceTest {
             when(paymentRepository.save(any(PaymentDocument.class))).thenReturn(doc);
 
             ProducerRecord<String, MessagePayment> producerRecord =
-                    new ProducerRecord<>("test", new MessagePayment("5214","paid"));
+                    new ProducerRecord<>("test", new MessagePayment("5214","paid", paymentDocumentMapper.toItems(doc.getItems())));
             RecordMetadata recordMetadata = mock(RecordMetadata.class);
 
             SendResult<String, MessagePayment> sendResult = new SendResult<>(producerRecord, recordMetadata);

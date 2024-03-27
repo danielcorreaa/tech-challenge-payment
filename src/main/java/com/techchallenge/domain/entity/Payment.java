@@ -19,8 +19,12 @@ public class Payment {
 	private List<Item> items;
 	private LocalDateTime createTime;
 	private Boolean sent;
+	private String cpfCustomer;
+	private LocalDateTime expirationDate;
 
-	public Payment(String externalReference, String title, String description, String notificationUrl, List<Item> items) {
+	public Payment(String externalReference, String title, String description, String notificationUrl,
+				   List<Item> items,
+				   String cpfCustomer) {
 		this.externalReference =  Validation.validateExternalReference(externalReference);
 		this.title = Validation.validateTitle(title);
 		this.description = Validation.validateDescription(description);
@@ -28,9 +32,12 @@ public class Payment {
 		this.items = Validation.validateItems(items);
 		this.sent = Boolean.FALSE;
 		this.createTime = LocalDateTime.now();
+		this.cpfCustomer = cpfCustomer;
 	}
 
-	private Payment(String externalReference, String title, String description, String notificationUrl, String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent) {
+	private Payment(String externalReference, String title, String description, String notificationUrl,
+					String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent,
+					LocalDateTime expirationDate, String cpfCustomer) {
 		this.externalReference = externalReference;
 		this.title = title;
 		this.description = description;
@@ -39,6 +46,8 @@ public class Payment {
 		this.items = items;
 		this.createTime = createTime;
 		this.sent = sent;
+		this.expirationDate = expirationDate;
+		this.cpfCustomer = cpfCustomer;
 	}
 
 
@@ -91,6 +100,14 @@ public class Payment {
 		return this;
 	}
 
+	public Payment toSendExpiration(){
+		if(Boolean.FALSE.equals(isPaid())) {
+			this.sent = Boolean.TRUE;
+			this.changeStatus("expired");
+		}
+		return this;
+	}
+
 	public Payment changeStatus(String status){
 		orderStatus = status;
 		return this;
@@ -104,10 +121,23 @@ public class Payment {
 		return sent;
 	}
 
+	public Optional<String> getCpfCustomer() {
+		return Optional.ofNullable(cpfCustomer);
+	}
+
+	public LocalDateTime getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(LocalDateTime expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
 	public static Payment toPayment(String externalReference, String title, String description, String notificationUrl,
-					String orderStatus, List<Item> items, LocalDateTime createTime, Boolean sent){
+									String orderStatus, List<Item> items, LocalDateTime createTime,
+									Boolean sent,LocalDateTime expirationDate, String cpfCustomer){
 		return new Payment(externalReference, title, description, notificationUrl,
-				 orderStatus,items, createTime, sent);
+				 orderStatus,items, createTime, sent, expirationDate, cpfCustomer);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -13,4 +14,5 @@ public interface PaymentRepository extends MongoRepository<PaymentDocument, Stri
 
     @Query("{ 'sent' : false , 'orderStatus': 'paid'}")
     List<PaymentDocument> findNotSendAndIsPaid(Sort createTime);
+
 }

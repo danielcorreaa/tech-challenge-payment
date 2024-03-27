@@ -51,21 +51,21 @@ class PaymentTest {
         @Test
         void testValidationExternalReference() {
             var ex = assertThrows(IllegalArgumentException.class,
-                    () -> new Payment("", "", "", "", List.of()));
+                    () -> new Payment("", "", "", "", List.of(),"15544284407"));
             assertEquals("External Reference can't be null or empty", ex.getMessage());
         }
 
         @Test
         void testValidationTitle() {
             var ex = assertThrows(IllegalArgumentException.class,
-                    () -> new Payment("2323", "", "", "", List.of()));
+                    () -> new Payment("2323", "", "", "", List.of(), "15544284407"));
             assertEquals("Title can't be null or empty", ex.getMessage());
         }
 
         @Test
         void testValidationDescription() {
             var ex = assertThrows(IllegalArgumentException.class,
-                    () -> new Payment("1212", "test", null, "", List.of()));
+                    () -> new Payment("1212", "test", null, "", List.of(), "15544284407"));
 
             assertEquals("Description can't be null or empty", ex.getMessage());
         }
@@ -73,7 +73,7 @@ class PaymentTest {
         @Test
         void testValidationItemsEmpty() {
             var ex = assertThrows(IllegalArgumentException.class,
-                    () -> new Payment("1212", "test", "test", "test", List.of()));
+                    () -> new Payment("1212", "test", "test", "",  List.of(), "15544284407"));
 
             assertEquals("Items can't be null", ex.getMessage());
         }
@@ -81,7 +81,7 @@ class PaymentTest {
         @Test
         void testValidationItemsNull() {
             var ex = assertThrows(IllegalArgumentException.class,
-                    () -> new Payment("1212", "test", "test", "test", null));
+                    () -> new Payment("1212", "test", "test", "test", null, "15544284407"));
 
             assertEquals("Items can't be null", ex.getMessage());
         }
@@ -94,7 +94,7 @@ class PaymentTest {
         void testValidationItemSkuNumber() {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
-                            List.of(new Item("", "", "", "", BigDecimal.ZERO, 0))));
+                            List.of(new Item("", "", "", "", BigDecimal.ZERO, 0)), "15544284407" ));
             assertEquals("Sku Number can't be null or empty", ex.getMessage());
         }
 
@@ -102,7 +102,7 @@ class PaymentTest {
         void testValidationItemCategory() {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
-                            List.of(new Item("344", "", "", "", BigDecimal.ZERO, 0))));
+                            List.of(new Item("344", "", "", "", BigDecimal.ZERO, 0)), "15544284407"));
             assertEquals("Category can't be null or empty", ex.getMessage());
         }
 
@@ -110,7 +110,7 @@ class PaymentTest {
         void testValidationItemTitle() {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
-                            List.of(new Item("323", "test", "", "", BigDecimal.ZERO, 0))));
+                            List.of(new Item("323", "test", "", "", BigDecimal.ZERO, 0)), "15544284407"));
             assertEquals("Title can't be null or empty", ex.getMessage());
         }
 
@@ -118,7 +118,7 @@ class PaymentTest {
         void testValidationItemDescription() {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
-                            List.of(new Item("323", "test", "test", null, BigDecimal.ZERO, 0))));
+                            List.of(new Item("323", "test", "test", null, BigDecimal.ZERO, 0)), "15544284407"));
             assertEquals("Description can't be null or empty", ex.getMessage());
         }
 
@@ -126,7 +126,7 @@ class PaymentTest {
         void testValidationItemUnitPrice() {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
-                            List.of(new Item("323", "test", "test", "test", BigDecimal.ZERO, 0))));
+                            List.of(new Item("323", "test", "test", "test", BigDecimal.ZERO, 0)), "15544284407"));
             assertEquals("Unit Price can't be null or 0", ex.getMessage());
         }
 
@@ -135,7 +135,7 @@ class PaymentTest {
             var ex = assertThrows(IllegalArgumentException.class,
                     () -> new Payment("1212", "test", "test", "test",
                             List.of(new Item("323", "test", "test", "test",
-                                    new BigDecimal("20"), 0))));
+                                    new BigDecimal("20"), 0)), "15544284407"));
             assertEquals("Quantity can't be null or 0", ex.getMessage());
         }
     }

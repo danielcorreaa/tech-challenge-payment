@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8087
 spring:
   application:
     name: tech-challenge-product
@@ -24,9 +24,11 @@ kafka:
   topic:
     consumer:
       orders: tech.orders
-      groupId: groupId
+      groupId: tech
     producer:
       payment: tech.payment
+      error:
+        payment: tech.error.payment
 
 lanchonete:
   description: Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas
@@ -34,3 +36,7 @@ lanchonete:
 
 notification:
   url: https://eogk4e0gy2wck7w.m.pipedream.net
+
+time:
+  expiration:
+    payment: 1

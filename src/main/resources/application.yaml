@@ -1,5 +1,7 @@
 server:
   port: 8083
+  servlet:
+    context-path: /tech-challenge-payment/
 spring:
   application:
     name: tech-challenge-payment
@@ -27,6 +29,8 @@ kafka:
       groupId: tech
     producer:
       payment: tech.payment
+      error:
+        payment: tech.error.payment
 
 lanchonete:
   description: Lanchonete Tech Challenge, Lanches, Bebidas, Sobremesas
@@ -34,11 +38,20 @@ lanchonete:
 
 swagger:
   title: Microserviço de Pagamentos
+  version: 1.0
+  description: APi para cadastro e pesquisa de Pagamentos
   contact:
+    name: Daniel A. Correa
     email: daniel.cor@outlook.com
-    name: Daniel Aleixo Correa
-    description: Microserviço desenvolvido para o curso de pós tech da FIAP
-    version: 1.0
 
 notification:
   url:
+
+logging:
+  level:
+    com.techchallenge.infrastructure.external:
+      HttpRequestML: DEBUG
+
+time:
+  expiration:
+    payment: 1

@@ -10,6 +10,7 @@ import com.techchallenge.infrastructure.api.request.PayRequest;
 import com.techchallenge.infrastructure.api.request.PaymentRequest;
 import com.techchallenge.infrastructure.api.request.PaymentResponse;
 import com.techchallenge.infrastructure.api.request.PaymentWebhookRequest;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -22,8 +23,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
+@Log4j2
 @RestController
-@RequestMapping("api/v1/payment")
+@RequestMapping("payment/api/v1")
 public class PaymentApi {
 
 	private PaymentUseCase paymentUseCase;
@@ -31,6 +33,9 @@ public class PaymentApi {
 
 	@Value("${notification.url}")
 	private String notificationUrl;
+
+	@Value("${time.expiration.payment}")
+	private Long minuteToExpirations;
 
 	public PaymentApi(PaymentUseCase paymentUseCase, PaymentMapper mapper) {
 		super();
@@ -46,19 +51,21 @@ public class PaymentApi {
 
 	@PostMapping("/pay")
 	public ResponseEntity<InputStreamResource> checkout(@RequestBody PayRequest payRequest, UriComponentsBuilder uri )  {
-		UriComponents uriComponents = uri.path("/api/v1/payment/webhook").build();
+		UriComponents uriComponents = uri.path("/payment/api/v1/webhook").build();
 		String notification = uriComponents.toUriString();
 		if(StringUtils.isNotBlank(notificationUrl)){
 			notification = notificationUrl;
 		}
-		PaymentQRCode qrCode = paymentUseCase.generatePayment(payRequest.externalReference(), notification);
+		PaymentQRCode qrCode = paymentUseCase.generatePayment(payRequest.externalReference(), notification, minuteToExpirations);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(new InputStreamResource(qrCode.getQrCode()));
 	}
 
 	@PostMapping("/webhook")
 	public ResponseEntity<Result<String>> webhook(@RequestBody PaymentWebhookRequest request) {
+		log.info(request);
 		paymentUseCase.webhook(request.resource());
-		return ResponseEntity.ok(Result.ok("Webhook process with success!"));
+		var result = Result.ok("Webhook process with success!");
+		return ResponseEntity.status(HttpStatus.OK).headers(result.getHeadersNosniff()).body(result);
 
 	}
 

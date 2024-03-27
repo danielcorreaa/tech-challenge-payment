@@ -14,7 +14,8 @@ public record PaymentRequest(
         String notificationUrl,
         @JsonProperty("total_amount")
         BigDecimal totalAmount,
-        List<ItemsRequest> items
+        List<ItemsRequest> items,
+        String cpfCustomer
 ) {
 
 }

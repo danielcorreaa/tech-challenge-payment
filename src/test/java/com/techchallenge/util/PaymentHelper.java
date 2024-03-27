@@ -23,7 +23,7 @@ public class PaymentHelper {
 
     public Payment getPaymentMock(String id){
         return new Payment(id, "test", "test", null,
-                List.of(getitemMock("2"), getitemMock("3")));
+                List.of(getitemMock("2"), getitemMock("3")), "15544284407");
     }
 
     public Item getitemMock(String id){

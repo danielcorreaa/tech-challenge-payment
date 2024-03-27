@@ -4,6 +4,7 @@ import com.techchallenge.MongoTestConfig;
 import com.techchallenge.domain.entity.Payment;
 import com.techchallenge.infrastructure.gateways.PaymentRepositoryGateway;
 import com.techchallenge.infrastructure.persistence.mapper.PaymentDocumentMapper;
+import com.techchallenge.infrastructure.persistence.repository.PaymentCollection;
 import com.techchallenge.infrastructure.persistence.repository.PaymentRepository;
 import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.AfterAll;
@@ -44,6 +45,8 @@ class PaymentRepositoryGatewayIT {
 
     PaymentHelper mock;
 
+    private PaymentCollection paymentCollection;
+
 
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:6.0.2"))
@@ -68,7 +71,7 @@ class PaymentRepositoryGatewayIT {
 
     @BeforeEach
     void init(){
-        paymentRepositoryGateway = new PaymentRepositoryGateway(paymentRepository, mapper);
+        paymentRepositoryGateway = new PaymentRepositoryGateway(paymentRepository, mapper, paymentCollection);
         mock = new PaymentHelper();
         clear();
     }

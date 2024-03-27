@@ -10,6 +10,7 @@ import com.techchallenge.util.PaymentHelper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -77,6 +78,7 @@ class PaymentProduceIT {
     PaymentDocumentMapper paymentDocumentMapper;
 
     @Autowired
+    @Qualifier("usecase-message-success")
     private MessageUseCase messageUseCase;
 
     @BeforeEach

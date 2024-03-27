@@ -61,6 +61,8 @@ jobs:
       - uses: GuillaumeFalourd/wait-sleep-action@v1
         with:
           time: '30' # for 30 seconds
+      - run: docker ps
+      - run: docker logs App
       - run: mvn test -P system-test
       - uses: actions/upload-artifact@v4
         with:

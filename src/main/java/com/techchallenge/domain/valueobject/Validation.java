@@ -76,4 +76,5 @@ public class Validation {
         if("paid".equals(orderStatus) ) return validate(orderStatus, "Order Status");
         throw new BusinessException("Invalid Message to sent, status is: " +orderStatus);
     }
+
 }
